@@ -101,7 +101,7 @@ export const constantRoutes = [
           },
           {
             path: '/menu2-2',
-            component: () => import('@/views/menu/menu2/menu2-2/complex-table'),
+            component: () => import('@/views/menu/menu2/menu2-2'),
             name: 'Menu2-2',
             meta: { title: '需求管理' }
 		  }
@@ -112,10 +112,11 @@ export const constantRoutes = [
 		path: '/menu3',
         name: 'Menu3',
         meta: { title: '援藏工作' },
+    component: () => import('@/views/menu/menu3'),
 		 children: [
           {
             path: '/menu3-1',
-            component: () => import('@/views/menu/menu3/menu3-1/index'),
+            component: () => import('@/views/menu/menu3/menu3-1'),
             name: 'Menu3-1',
             meta: { title: '路线管理' }
           },
@@ -127,7 +128,7 @@ export const constantRoutes = [
 		  },
 		 {
             path: '/menu3-3',
-            component: () => import('@/views/menu/menu3/menu3-3'),
+            component: () => import('@/views/menu/menu3/menu3-3/complex-table'),
             name: 'Menu3-3',
             meta: { title: '援藏政策' }
 		  }
