@@ -27,7 +27,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-	proxy: "http://127.0.0.1:8082",
+	proxy: "http://127.0.0.1:8080",
    
         port: 9528
   },
