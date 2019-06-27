@@ -194,7 +194,7 @@
 					type: undefined,
 					sort: '+id'
 				},
-				// importanceOptions: [1, 2, 3],
+
 				calendarTypeOptions,
 				sortOptions: [{
 					label: 'ID Ascending',
@@ -223,24 +223,9 @@
 				},
 				dialogPvVisible: false,
 				pvData: [],
-				// rules: {
-				// 	type: [{
-				// 		required: true,
-				// 		message: 'type is required',
-				// 		trigger: 'change'
-				// 	}],
-				// 	timestamp: [{
-				// 		type: 'date',
-				// 		required: true,
-				// 		message: 'timestamp is required',
-				// 		trigger: 'change'
-				// 	}],
-				// 	title: [{
-				// 		required: true,
-				// 		message: 'title is required',
-				// 		trigger: 'blur'
-				// 	}]
-				// },
+
+
+
 				downloadLoading: false
 			}
 		},
@@ -256,7 +241,7 @@
 					this.list = response.data.items
 					this.total = response.data.total
 
-					// Just to simulate the time of the request
+
 					setTimeout(() => {
 						this.listLoading = false
 					}, 1.5 * 1000)
@@ -308,29 +293,6 @@
 			
 			resetTemp() {
 
-				// this.temp = {
-
-				// 	id: '',
-				// 	remark: '',
-				// 	createTime: '',
-				// 	title: '',
-				// 	status: 'published',
-				// 	type: '',
-				// 	editor:''
-				// }
-			
-				// var this_ = this
-				// axios.get('/message/getthings')
-				// 	.then(function(response) {
-						
-				// 		this_.temp.id = response.data.id
-				// 		this_.temp.createTime = response.data.date
-				// 		this_.temp.editor = Cookies.get("username")
-				// 		console.log( Cookies.get("username")+'asdasdasd');
-				// 	})
-				// 	.catch(function(error) {
-				// 		console.log(error);
-				// 	});
 			},
 			handleCreate() {
 				this.resetTemp()
@@ -385,7 +347,7 @@
 			handleUpdate(row) {
 				var this_ = this
 				this.temp = Object.assign({}, row) // copy obj
-				//this.temp.timestamp = new Date(this.temp.timestamp)
+
 				this_.temp.Editor = Cookies.get("username")
 				this.dialogStatus = 'update'
 				this.dialogFormVisible = true
@@ -397,7 +359,7 @@
 				this.$refs['dataForm'].validate((valid) => {
 					if(valid) {
 						const tempData = Object.assign({}, this.temp)
-						// tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+
 						updateArticle(tempData).then(() => {
 							for(const v of this.list) {
 								if(v.id === this.temp.id) {
@@ -417,36 +379,14 @@
 					}
 				})
 			},
-			// handleDelete(row) {
-			// 	this.$notify({
-			// 		title: 'Success',
-			// 		message: 'Delete Successfully',
-			// 		type: 'success',
-			// 		duration: 2000
-			// 	})
-			// 	const index = this.list.indexOf(row)
-			// 	this.list.splice(index, 1)
-			// },
+
 			handleFetchPv(pv) {
 				fetchPv(pv).then(response => {
 					this.pvData = response.data.pvData
 					this.dialogPvVisible = true
 				})
 			},
-			// handleDownload() {
-			// 	this.downloadLoading = true
-			// 	import('@/vendor/Export2Excel').then(excel => {
-			// 		const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-			// 		const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-			// 		const data = this.formatJson(filterVal, this.list)
-			// 		excel.export_json_to_excel({
-			// 			header: tHeader,
-			// 			data,
-			// 			filename: 'table-list'
-			// 		})
-			// 		this.downloadLoading = false
-			// 	})
-			// },
+
 			formatJson(filterVal, jsonData) {
 				return jsonData.map(v => filterVal.map(j => {
 					if(j === 'timestamp') {
