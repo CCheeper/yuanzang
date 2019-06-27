@@ -2,7 +2,6 @@ package com.example.yuanz.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.yuanz.entity.NeedEntity;
 import com.example.yuanz.server.Needlpml;
 
 
@@ -28,9 +27,6 @@ public class NeedController {
     @ResponseBody
     @RequestMapping("/need/list")
     public JSONObject articleList(@RequestParam("page") String page, @RequestParam("limit") String limit) {
-
-
-
         int pagenum = Integer.valueOf(page);
         int limitnum = Integer.valueOf(limit);
         int total = needlpml.findCountByNeed();

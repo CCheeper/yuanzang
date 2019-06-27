@@ -1,6 +1,5 @@
 package com.example.yuanz.server;
 
-import com.example.yuanz.entity.NeedEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

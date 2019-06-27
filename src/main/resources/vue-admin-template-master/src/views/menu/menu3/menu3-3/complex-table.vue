@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="文件名" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.fileurl }}</span>
+          <span><a>{{ row.fileurl }}</a></span>
         </template>
       </el-table-column>
       <el-table-column label="编辑者" min-width="40px" align="center">
@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from "@/api/need";
+import { fetchList, fetchPv, createPolicy , updatePolicy } from "@/api/policy";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
@@ -300,7 +300,7 @@ export default {
       });
       console.log("sss");
       axios
-        .post("/message/isSuccess", {
+        .post("/policy/delect", {
           status: "delete",
           id: row.id
         })
@@ -339,7 +339,7 @@ export default {
     createData(temp) {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          createArticle(this.temp).then(() => {
+          createPolicy(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = false;
             this.$notify({
@@ -366,7 +366,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
           tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updatePolicy(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v);

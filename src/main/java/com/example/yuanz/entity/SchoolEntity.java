@@ -109,7 +109,7 @@ public class SchoolEntity {
     }
 
     @Basic
-    @Column(name = "editorId")
+    @Column(name = "editor_id")
     public String getEditorId() {
         return editorId;
     }

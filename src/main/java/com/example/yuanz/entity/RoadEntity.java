@@ -12,6 +12,7 @@ public class RoadEntity {
     private String schoolid;
     private String time;
     private String other;
+    private String editorid;
 
     @Id
     @Column(name = "id")
@@ -89,5 +90,15 @@ public class RoadEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, route, title, schoolid, time, other);
+    }
+
+    @Basic
+    @Column(name = "editorid")
+    public String getEditorid() {
+        return editorid;
+    }
+
+    public void setEditorid(String editorid) {
+        this.editorid = editorid;
     }
 }
