@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    password: Qqqq986030770
+    url: jdbc:mysql://rm-bp12d44tfrlbocbiweo.mysql.rds.aliyuncs.com:3306/yuanzang?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  port: 8082
+
