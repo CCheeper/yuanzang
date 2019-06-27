@@ -195,7 +195,7 @@
 					sort: '+id'
 				},
 				// importanceOptions: [1, 2, 3],
-				// calendarTypeOptions,
+				calendarTypeOptions,
 				sortOptions: [{
 					label: 'ID Ascending',
 					key: '+id'

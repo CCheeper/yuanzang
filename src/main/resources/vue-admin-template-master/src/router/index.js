@@ -56,43 +56,43 @@ export const constantRoutes = [
   },
 
 
-  
+
   {
-	path: '/menu',
-    component: Layout, 
-	meta: {
+    path: '/menu',
+    component: Layout,
+    meta: {
       title: '系统管理',
       icon: 'nested'
     },
 
-	children: [
-	{
-		path: '/menu1',
+    children: [
+      {
+        path: '/menu1',
         name: 'Menu1',
         meta: { title: '系统管理' },
-		component: () => import('@/views/menu/menu1'),
+        component: () => import('@/views/menu/menu1'),
         children: [
           {
             path: '/menu1-1',
             name: 'Menu1-1',
             meta: { title: '权限管理' },
-			component: () => import('@/views/menu/menu1/menu1-1')
+            component: () => import('@/views/menu/menu1/menu1-1')
           },
           {
             path: '/menu1-2',
             component: () => import('@/views/menu/menu1/menu1-2/complex-table'),
             name: 'Menu1-2',
             meta: { title: '角色管理' }
-		  }
-		
-		]
-	},
-	{
-		path: '/menu2',
+          }
+
+        ]
+      },
+      {
+        path: '/menu2',
         name: 'Menu2',
-		component: () => import('@/views/menu/menu2'),
+        component: () => import('@/views/menu/menu2'),
         meta: { title: '援藏高校' },
-		 children: [
+        children: [
           {
             path: '/menu2-1',
             component: () => import('@/views/menu/menu2/menu2-1/complex-table'),
@@ -104,16 +104,16 @@ export const constantRoutes = [
             component: () => import('@/views/menu/menu2/menu2-2'),
             name: 'Menu2-2',
             meta: { title: '需求管理' }
-		  }
-		
-		]
-	},
-	{
-		path: '/menu3',
+          }
+
+        ]
+      },
+      {
+        path: '/menu3',
         name: 'Menu3',
         meta: { title: '援藏工作' },
-    component: () => import('@/views/menu/menu3'),
-		 children: [
+        component: () => import('@/views/menu/menu3'),
+        children: [
           {
             path: '/menu3-1',
             component: () => import('@/views/menu/menu3/menu3-1'),
@@ -125,20 +125,20 @@ export const constantRoutes = [
             component: () => import('@/views/menu/menu3/menu3-2'),
             name: 'Menu3-2',
             meta: { title: '工作动态' }
-		  },
-		 {
+          },
+          {
             path: '/menu3-3',
             component: () => import('@/views/menu/menu3/menu3-3/complex-table'),
             name: 'Menu3-3',
             meta: { title: '援藏政策' }
-		  }
-		]
-	},
-		{
-		path: '/menu4',
+          }
+        ]
+      },
+      {
+        path: '/menu4',
         name: 'Menu4',
         meta: { title: '招聘管理' },
-		 children: [
+        children: [
           {
             path: '/menu4-1',
             component: () => import('@/views/menu/menu4/menu4-1'),
@@ -150,11 +150,11 @@ export const constantRoutes = [
             component: () => import('@/views/menu/menu4/menu4-2'),
             name: 'Menu4-2',
             meta: { title: '人才引进' }
-		  }
-		
-		]
-	}
-	]
+          }
+
+        ]
+      }
+    ]
   },
 
   {

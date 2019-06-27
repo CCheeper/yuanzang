@@ -35,12 +35,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="标题" width="110px" align="center">
+      <el-table-column label="标题" width="150px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.title }}</span>
         </template>
@@ -50,7 +50,7 @@
           <span>{{ row.fileurl }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="编辑者" min-width="150px">
+      <el-table-column label="编辑者" min-width="40px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.editorid }}</span>
         </template>
@@ -97,7 +97,6 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
-        :rules="rules"
         :model="temp"
         label-position="left"
         label-width="70px"
@@ -258,48 +257,24 @@ export default {
       },
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        type: [
-          {
-            required: true,
-            message: "type is required",
-            trigger: "change"
-          }
-        ],
-        timestamp: [
-          {
-            type: "date",
-            required: true,
-            message: "timestamp is required",
-            trigger: "change"
-          }
-        ],
-        title: [
-          {
-            required: true,
-            message: "title is required",
-            trigger: "blur"
-          }
-        ]
-      },
-	  downloadLoading: false,
-	  FileList:[{name:''},{url:''}]
 
+      downloadLoading: false,
+      FileList: []
     };
   },
   created() {
     this.getList();
   },
   methods: {
-	  submitUpload() {
-        this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
     getList(data) {
       this.listLoading = true;
       fetchList(this.listQuery).then(response => {
@@ -352,30 +327,7 @@ export default {
       this.handleFilter();
     },
 
-    resetTemp() {
-      this.temp = {
-        id: "",
-        remark: "",
-        createTime: "",
-        title: "",
-        status: "published",
-        type: "",
-        editor: ""
-      };
-
-      var this_ = this;
-      axios
-        .get("/message/getthings")
-        .then(function(response) {
-          console.log(response);
-          this_.temp.id = response.data.id;
-          this_.temp.createTime = response.data.date;
-          this_.temp.editor = response.data.editor;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
+    resetTemp() {},
     handleCreate() {
       this.resetTemp();
       this.dialogStatus = "create";
@@ -433,42 +385,14 @@ export default {
         }
       });
     },
-    handleDelete(row) {
-      this.$notify({
-        title: "Success",
-        message: "Delete Successfully",
-        type: "success",
-        duration: 2000
-      });
-      const index = this.list.indexOf(row);
-      this.list.splice(index, 1);
-    },
+
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
         this.pvData = response.data.pvData;
         this.dialogPvVisible = true;
       });
     },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then(excel => {
-        const tHeader = ["timestamp", "title", "type", "importance", "status"];
-        const filterVal = [
-          "timestamp",
-          "title",
-          "type",
-          "importance",
-          "status"
-        ];
-        const data = this.formatJson(filterVal, this.list);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list"
-        });
-        this.downloadLoading = false;
-      });
-    },
+
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {
