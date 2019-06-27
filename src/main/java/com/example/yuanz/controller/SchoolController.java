@@ -103,7 +103,9 @@ public class SchoolController {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String date = ft.format(dNow);
+
         SchoolEntity schoolEntity = new SchoolEntity();
+
         schoolEntity.setCity("");
         schoolEntity.setCreateTime(date);
         schoolEntity.setHistory((String) json.get("history"));
