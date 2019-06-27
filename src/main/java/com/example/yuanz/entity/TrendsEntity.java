@@ -11,6 +11,7 @@ public class TrendsEntity {
     private String message;
     private String lasttime;
     private String other;
+    private String editorid;
 
     @Id
     @Column(name = "id")
@@ -77,5 +78,15 @@ public class TrendsEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, message, lasttime, other);
+    }
+
+    @Basic
+    @Column(name = "editorid")
+    public String getEditorid() {
+        return editorid;
+    }
+
+    public void setEditorid(String editorid) {
+        this.editorid = editorid;
     }
 }

@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "need", schema = "yuanzang", catalog = "")
-public class NeedEntity {
+@Table(name = "policy", schema = "yuanzang", catalog = "")
+public class PolicyEntity {
     private String id;
     private String title;
     private String fileurl;
+    private String editorid;
     private String time;
     private String other;
-    private String editorid;
 
     @Id
     @Column(name = "id")
@@ -44,6 +44,16 @@ public class NeedEntity {
     }
 
     @Basic
+    @Column(name = "editorid")
+    public String getEditorid() {
+        return editorid;
+    }
+
+    public void setEditorid(String editorid) {
+        this.editorid = editorid;
+    }
+
+    @Basic
     @Column(name = "time")
     public String getTime() {
         return time;
@@ -67,26 +77,17 @@ public class NeedEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NeedEntity that = (NeedEntity) o;
+        PolicyEntity that = (PolicyEntity) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(fileurl, that.fileurl) &&
+                Objects.equals(editorid, that.editorid) &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(other, that.other);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, fileurl, time, other);
-    }
-
-    @Basic
-    @Column(name = "editorid")
-    public String getEditorid() {
-        return editorid;
-    }
-
-    public void setEditorid(String editorid) {
-        this.editorid = editorid;
+        return Objects.hash(id, title, fileurl, editorid, time, other);
     }
 }

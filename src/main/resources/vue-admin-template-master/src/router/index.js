@@ -103,7 +103,7 @@ export const constantRoutes = [
             path: '/menu2-2',
             component: () => import('@/views/menu/menu2/menu2-2'),
             name: 'Menu2-2',
-            meta: { title: '需求管理' }
+            meta: { title: '援藏需求' }
           }
 
         ]

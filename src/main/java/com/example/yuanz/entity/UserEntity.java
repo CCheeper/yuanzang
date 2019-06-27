@@ -23,6 +23,7 @@ public class UserEntity {
     private String address;
     private String gender;
     private String other;
+    private String recruitId;
 
     @Id
     @Column(name = "id")
@@ -166,5 +167,15 @@ public class UserEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, level, telephone, qq, email, schoolId, schoolName, address, gender, other);
+    }
+
+    @Basic
+    @Column(name = "recruit_id")
+    public String getRecruitId() {
+        return recruitId;
+    }
+
+    public void setRecruitId(String recruitId) {
+        this.recruitId = recruitId;
     }
 }

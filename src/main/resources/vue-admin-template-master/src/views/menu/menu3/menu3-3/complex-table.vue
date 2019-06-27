@@ -47,12 +47,14 @@
       </el-table-column>
       <el-table-column label="文件名" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.fileurl }}</span>
+          <span>
+            <a>{{ row.fileurl }}</a>
+          </span>
         </template>
       </el-table-column>
-      <el-table-column label="编辑者" min-width="40px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.editorid }}</span>
+       <el-table-column label="编辑者" width="150px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.Editor }}</span>
         </template>
       </el-table-column>
 
@@ -158,11 +160,12 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from "@/api/need";
+import { fetchList, fetchPv, createPolicy, updatePolicy } from "@/api/policy";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import axios from "axios";
+import Cookies from 'js-cookie'
 
 const calendarTypeOptions = [
   {
@@ -291,7 +294,9 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1;
-      this.getList();
+      var title;
+      title = this.listQuery.title;
+      this.getList(title);
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -300,7 +305,7 @@ export default {
       });
       console.log("sss");
       axios
-        .post("/message/isSuccess", {
+        .post("/policy/delect", {
           status: "delete",
           id: row.id
         })
@@ -330,6 +335,30 @@ export default {
     resetTemp() {},
     handleCreate() {
       this.resetTemp();
+
+      this.temp = {
+        id: "",
+        remark: "",
+        createTime: "",
+        title: "",
+        status: "published",
+        type: "",
+        editor: ""
+      };
+
+      var this_ = this;
+      axios
+        .get("/policy/getthings")
+        .then(function(response) {
+          this_.temp.id = response.data.id;
+          this_.temp.createTime = response.data.date;
+          this_.temp.editor = Cookies.get("username");      //前端更新显示，并未从后端获取，但是数据和后台一样
+          console.log(Cookies.get("username") + "asdasdasd");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
       this.dialogStatus = "create";
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -339,7 +368,8 @@ export default {
     createData(temp) {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          createArticle(this.temp).then(() => {
+          createPolicy(this.temp).then(() => {
+            
             this.list.unshift(this.temp);
             this.dialogFormVisible = false;
             this.$notify({
@@ -353,8 +383,11 @@ export default {
       });
     },
     handleUpdate(row) {
+      var this_ = this
       this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
+
+      this_.temp.Editor = Cookies.get("username");
+
       this.dialogStatus = "update";
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -365,8 +398,8 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          // tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updatePolicy(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v);
