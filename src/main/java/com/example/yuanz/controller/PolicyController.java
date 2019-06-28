@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
-public class PolicyController {
+public class PolicyController{
     @Autowired
     Policylpml policylpml;
     @Autowired
@@ -35,14 +31,32 @@ public class PolicyController {
        // String id = (String) json.get("id");
         policylpml.deleteById((String) json.get("id"));
     }
-
+//上传模块
     @ResponseBody
     @RequestMapping("/upload")
     public JSONObject upload(@RequestBody JSONObject jsonObject,HttpServletRequest request) {
 
         System.out.println(jsonObject.get("name"));
 
-
+//        MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
+//        MultipartFile multipartFile = multipartRequest.getFile("file");
+//
+//
+//        Map<String, Object> result = new HashMap<>();
+//        if (multipartFile != null && !multipartFile.isEmpty()){
+//            try {
+//                multipartFile.transferTo(new File("d:/"+multipartFile.getOriginalFilename()));
+//                result.put("code", 200);
+//                result.put("msg", "success");
+//            } catch (IOException e) {
+//                result.put("code", -1);
+//                result.put("msg", "文件上传出错，请重新上传！");
+//                e.printStackTrace();
+//            }
+//        } else {
+//            result.put("code", -1);
+//            result.put("msg", "未获取到有效的文件信息，请重新上传!");
+//        }
 
 
 
