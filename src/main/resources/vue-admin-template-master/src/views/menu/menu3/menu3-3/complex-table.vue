@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.title"
-        placeholder="Title"
+        placeholder=""
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
@@ -111,11 +111,11 @@
           <el-upload
             class="upload-demo"
             ref="upload"
-            action="/"
+            action="/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
-            :file-list="fileList"
             :auto-upload="false"
+            :on-progress="onProgress"
           >
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <el-button
@@ -160,12 +160,13 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createPolicy, updatePolicy } from "@/api/policy";
+import { fetchList, fetchPv, createPolicy, updatePolicy,uploadfile } from "@/api/policy";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import axios from "axios";
 import Cookies from 'js-cookie'
+import { request } from 'http';
 
 const calendarTypeOptions = [
   {
@@ -225,7 +226,7 @@ export default {
         page: 1,
         limit: 20,
         importance: undefined,
-        title: undefined,
+        title: '',
         type: undefined,
         sort: "+id"
       },
@@ -262,13 +263,15 @@ export default {
       pvData: [],
 
       downloadLoading: false,
-      FileList: []
+
     };
   },
   created() {
     this.getList();
   },
   methods: {
+
+
     submitUpload() {
       this.$refs.upload.submit();
     },
@@ -278,6 +281,22 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
+
+
+    onProgress(event, file, fileList) {
+      this.listLoading = true;
+      console.log(file)
+      uploadfile(file).then(request => {
+        var ssssss=this.file.name
+
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false;
+        }, 1.5 * 1000);
+      });
+    },
+
+
     getList(data) {
       this.listLoading = true;
       fetchList(this.listQuery).then(response => {

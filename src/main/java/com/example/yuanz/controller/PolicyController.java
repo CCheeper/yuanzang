@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +35,22 @@ public class PolicyController {
        // String id = (String) json.get("id");
         policylpml.deleteById((String) json.get("id"));
     }
+
+    @ResponseBody
+    @RequestMapping("/upload")
+    public JSONObject upload(@RequestBody JSONObject jsonObject,HttpServletRequest request) {
+
+        System.out.println(jsonObject.get("name"));
+
+
+
+
+
+        JSONObject object = new JSONObject();
+        object.put("code", 20000);
+        return object;
+    }
+
 
 
     @ResponseBody
