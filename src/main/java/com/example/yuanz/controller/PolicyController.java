@@ -17,6 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+
+        //权限管理
+
+
 @Controller
 public class PolicyController{
     @Autowired
@@ -24,7 +29,7 @@ public class PolicyController{
     @Autowired
     Administratorlpml administratorlpml;
 
-
+//删除管理功能
     @ResponseBody
     @RequestMapping("/policy/delect")
     public void delect(@RequestBody JSONObject json) {
@@ -36,7 +41,7 @@ public class PolicyController{
     @RequestMapping("/upload")
     public JSONObject upload(@RequestBody JSONObject jsonObject,HttpServletRequest request) {
 
-        System.out.println(jsonObject.get("name"));
+      //  System.out.println(jsonObject.get("name"));
 
 //        MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
 //        MultipartFile multipartFile = multipartRequest.getFile("file");
@@ -58,8 +63,6 @@ public class PolicyController{
 //            result.put("msg", "未获取到有效的文件信息，请重新上传!");
 //        }
 
-
-
         JSONObject object = new JSONObject();
         object.put("code", 20000);
         return object;
@@ -69,18 +72,18 @@ public class PolicyController{
 
     @ResponseBody
         @RequestMapping("/policy/list")
-        public JSONObject postlist(@RequestParam("page") String page, @RequestParam("limit") String limit,@RequestParam("title") String titel) {
+        public JSONObject postlist(@RequestParam("page") String page, @RequestParam("limit") String limit,@RequestParam("title") String title) {
             int pagenum = Integer.valueOf(page);
             int limitnum = Integer.valueOf(limit);
             int total = policylpml.findCountByPolicy();
-            List<PolicyEntity> list= new ArrayList<PolicyEntity>();;
+            List<PolicyEntity> list= new ArrayList<PolicyEntity>();
             JSONArray array = new JSONArray();
 
             int startnum = (pagenum - 1) * limitnum;
 
 
-        if( policylpml.findPolicyEntityByTitle(titel)!=null){
-            PolicyEntity policyEntity =  policylpml.findPolicyEntityByTitle(titel);
+        if( policylpml.findPolicyEntityByTitle(title)!=null){
+            PolicyEntity policyEntity =  policylpml.findPolicyEntityByTitle(title);
             list.add(policyEntity);
         }else {
             if (total > pagenum * limitnum) {
@@ -110,10 +113,7 @@ public class PolicyController{
     }
 
     @ResponseBody
-    @RequestMapping(value = {
-            "/policy/create",
-            "/policy/update"
-    })
+    @RequestMapping(value = {"/policy/create", "/policy/update"})
 
     public JSONObject create(@RequestBody JSONObject json, HttpServletRequest request) {
         Date dNow = new Date();

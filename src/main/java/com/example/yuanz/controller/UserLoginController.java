@@ -58,7 +58,7 @@ public class UserLoginController {
         data.put("introduction", "I am a super administrator");
         data.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         data.put("name", name);
-        System.out.println(name);
+     //   System.out.println(name);
         object.put("data", data);
 
 
