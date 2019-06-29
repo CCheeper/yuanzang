@@ -1,6 +1,7 @@
 package com.example.yuanz.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,7 @@ public class AdministratorEntity {
     private String email;
     private String telephone;
     private String other;
+
 
     @Id
     @Column(name = "id")

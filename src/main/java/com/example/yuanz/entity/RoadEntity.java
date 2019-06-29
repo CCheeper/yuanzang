@@ -13,6 +13,7 @@ public class RoadEntity {
     private String time;
     private String other;
     private String editorid;
+    private String schoolname;
 
     @Id
     @Column(name = "id")
@@ -100,5 +101,15 @@ public class RoadEntity {
 
     public void setEditorid(String editorid) {
         this.editorid = editorid;
+    }
+
+    @Basic
+    @Column(name = "schoolname")
+    public String getSchoolname() {
+        return schoolname;
+    }
+
+    public void setSchoolname(String schoolname) {
+        this.schoolname = schoolname;
     }
 }
