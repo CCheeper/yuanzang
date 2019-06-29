@@ -1,11 +1,12 @@
 package com.example.yuanz.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "power_edit", schema = "yuanzang", catalog = "")
-public class PowerEditEntity {
+public class PowerEditEntity implements Serializable {
     private String powerId;
     private String adminId;
     private String powerEdit;
@@ -16,6 +17,9 @@ public class PowerEditEntity {
     private String helpZEdit;
     private String helppeopleEdit;
     private String personalEdit;
+    private String time;
+    private String editor;
+    private Integer needEdit;
 
     @Id
     @Column(name = "power_id")
@@ -27,6 +31,7 @@ public class PowerEditEntity {
         this.powerId = powerId;
     }
 
+    @Id
     @Basic
     @Column(name = "admin_id")
     public String getAdminId() {
@@ -137,5 +142,35 @@ public class PowerEditEntity {
     @Override
     public int hashCode() {
         return Objects.hash(powerId, adminId, powerEdit, roleEdit, schoolEdit, roadEdit, workdataEdit, helpZEdit, helppeopleEdit, personalEdit);
+    }
+
+    @Basic
+    @Column(name = "time")
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    @Basic
+    @Column(name = "editor")
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    @Basic
+    @Column(name = "need_edit")
+    public Integer getNeedEdit() {
+        return needEdit;
+    }
+
+    public void setNeedEdit(Integer needEdit) {
+        this.needEdit = needEdit;
     }
 }

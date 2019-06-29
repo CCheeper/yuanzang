@@ -2,10 +2,8 @@ package com.example.yuanz.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.yuanz.entity.SchoolEntity;
+import com.example.yuanz.entity.AdministratorEntity;
 import com.example.yuanz.server.Administratorlpml;
-import com.example.yuanz.server.Schoolmpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,37 +18,33 @@ import java.util.Date;
 import java.util.List;
 
 
-
-
-//搜索功能 强化模糊查询 注解Rest问题
 @Controller
-public class SchoolController {
-    @Autowired
-    Schoolmpl schoolmpl;
+public class RoleController {
     @Autowired
     Administratorlpml administratorlpml;
 
 
     @ResponseBody
-    @RequestMapping("/article/list")
-    public JSONObject articleList(@RequestParam("page") String page, @RequestParam("limit") String limit,@RequestParam("title") String titel) {
+    @RequestMapping("/role/list")
+    public JSONObject articleList(@RequestParam("page") String page, @RequestParam("limit") String limit, @RequestParam("title") String titel) {
 
         int pagenum = Integer.valueOf(page);
         int limitnum = Integer.valueOf(limit);
-        int total = schoolmpl.findCountBySchool();
+        int total = administratorlpml.findCountByAdministrator();
 
-        List<SchoolEntity> list = new ArrayList<SchoolEntity>();
+        List<AdministratorEntity> list = new ArrayList<AdministratorEntity>();
 
         //如果搜索框不存在字段则获取全部数据，如果搜索框存在，则转到第一步，通过搜索框内容查询对应内容
-        if( schoolmpl.findSchoolEntityBySchoolName(titel)!=null){
-            SchoolEntity schoolEntity =  schoolmpl.findSchoolEntityBySchoolName(titel);
-            list.add(schoolEntity);
+
+        if( administratorlpml.findAdministratorEntityByUsername(titel)!=null){
+            AdministratorEntity administratorEntity =  administratorlpml.findAdministratorEntityByUsername(titel);
+            list.add(administratorEntity);
         }else {
             int startnum = (pagenum - 1) * limitnum;
             if (total > pagenum * limitnum) {
-                list = schoolmpl.findBySchoolRange(startnum, limitnum);
+                list = administratorlpml.findByAdministratorRange(startnum, limitnum);
             } else {
-                list = schoolmpl.findBySchoolRange(startnum, pagenum * limitnum - total);
+                list = administratorlpml.findByAdministratorRange(startnum, pagenum * limitnum - total);
             }
         }
         //用于存储list
@@ -61,14 +54,13 @@ public class SchoolController {
 
         for (int i = 0; i < list.size(); i++) {
             JSONObject object = new JSONObject();
-            object.put("createTime", list.get(i).getCreateTime());
+            object.put("createTime", list.get(i).getCreatetime());
             object.put("id", list.get(i).getId());
-            object.put("isgo", list.get(i).getIsGo());
-            object.put("isneed", list.get(i).getIsNeed());
-            object.put("name", list.get(i).getSchoolName());
-            object.put("jianjie", list.get(i).getInfo());
-            object.put("history", list.get(i).getHistory());
-            object.put("Editor", list.get(i).getEditor());
+            object.put("qq", list.get(i).getQq());
+            object.put("level", list.get(i).getLevel());
+            object.put("email", list.get(i).getEmail());
+            object.put("username", list.get(i).getUsername());
+            object.put("telephone", list.get(i).getTelephone());
             object.put("comment_disabled", true);//
             array.add(object);
         }
@@ -84,17 +76,17 @@ public class SchoolController {
 
     //删除
     @ResponseBody
-    @RequestMapping("/message/isSuccess")
+    @RequestMapping("/role/delete")
     public void isSuccess(@RequestBody JSONObject json) {
         String id = (String) json.get("id");
-        schoolmpl.deleteById(id);
+        administratorlpml.deleteById(id);
     }
 
 
     @ResponseBody
     @RequestMapping(value = {
-            "/article/create",
-            "/article/update"
+            "/role/create",
+            "/role/update"
     })
 
     public JSONObject create(@RequestBody JSONObject json, HttpServletRequest request) {
@@ -103,32 +95,26 @@ public class SchoolController {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String date = ft.format(dNow);
 
+
         //将json中值取出并且储存到对象中
-        SchoolEntity schoolEntity = new SchoolEntity();
-
-        schoolEntity.setCity("");
-        schoolEntity.setCreateTime(date);
-        schoolEntity.setHistory((String) json.get("history"));
-        schoolEntity.setId((String) json.get("id"));
-        schoolEntity.setInfo((String) json.get("jianjie"));
-        schoolEntity.setIsNeed((String) json.get("isneed"));
-        schoolEntity.setIsGo((String) json.get("isgo"));
-        schoolEntity.setSchoolName((String) json.get("name"));
-        schoolEntity.setEditor((String) json.get("Editor"));
-
-        //获取cookie
-        String name = null;
-        Cookie[] cookies = request.getCookies();
-        if (null != cookies) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("username")) {
-                    name = cookie.getValue();
-                }
-            }
+        AdministratorEntity administratorEntity = new AdministratorEntity();
+        if(administratorlpml.findAdministratorEntityByUsername((String) json.get("username"))==null){
+            administratorEntity.setId(String.valueOf(administratorlpml.findCountByAdministrator()));
+        }else {
+            administratorEntity.setId((String) json.get("id"));
         }
 
-        schoolEntity.setEditorId(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
-        schoolmpl.save(schoolEntity);
+        administratorEntity.setCreatetime(date);
+        administratorEntity.setEmail((String) json.get("email"));
+
+        administratorEntity.setUsername((String) json.get("username"));
+        administratorEntity.setLevel(5);
+        administratorEntity.setPassword((String) json.get("password"));
+        administratorEntity.setQq((String) json.get("qq"));
+        administratorEntity.setTelephone((String) json.get("telephone"));
+
+
+        administratorlpml.save(administratorEntity);
 
         //返回正确表示
         JSONObject object = new JSONObject();
@@ -142,9 +128,9 @@ public class SchoolController {
 
     //获取id，编辑者，时间传输给前端，解决前端编辑，创建后不显示前面三者的问题
     @ResponseBody
-    @RequestMapping("/message/getthings")
+    @RequestMapping("/role/getthings")
     public JSONObject getthings() {
-        int total = schoolmpl.findCountBySchool() + 1;
+        int total = administratorlpml.findCountByAdministrator() + 1;
         String id = String.valueOf(total);
         JSONObject object = new JSONObject();
         Date dNow = new Date();
@@ -152,7 +138,7 @@ public class SchoolController {
         String date = ft.format(dNow);
         object.put("id", id);
         object.put("date", date);
-        object.put("editor", "admin");
+ //       object.put("editor", "admin");
         return object;
     }
 }
