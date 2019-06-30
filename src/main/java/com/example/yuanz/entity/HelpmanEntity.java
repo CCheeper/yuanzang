@@ -11,13 +11,13 @@ public class HelpmanEntity {
     private String telephone;
     private String qq;
     private String email;
-    private String schoolId;
-    private String schoolName;
-    private String address;
-    private String gender;
-    private String recruitId;
+    private String schoolId;//招聘的学校的名字
+    private String schoolName;//招聘的学校的名字
+    private String address;//招聘人员地址
+    private String gender;//招聘性别
+    private String recruitId;//招聘编号
     private String other;
-    private String createTime;
+    private String createTime;//招聘时间
 
     @Id
     @Column(name = "id")
