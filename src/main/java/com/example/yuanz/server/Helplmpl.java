@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface Helplmpl extends JpaRepository<HelpmanEntity,String> {
 
-    @Query (value = "select * from user LIMIT ?1,?2",nativeQuery = true)
+    @Query (value = "select * from helpman LIMIT ?1,?2",nativeQuery = true)
     List<HelpmanEntity> findByhelpmanRang(int start,int end);
 
-    @Query(value = "select count (*) from user", nativeQuery = true)
+    @Query(value = "select count(*) from helpman", nativeQuery = true)
     int findCountByhelpman();
 
     HelpmanEntity findUserEntitiesByUsername(String username);

@@ -18,30 +18,30 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-
-        //权限管理
+//权限管理
 
 
 @Controller
-public class PolicyController{
+public class PolicyController {
     @Autowired
     Policylpml policylpml;
     @Autowired
     Administratorlpml administratorlpml;
 
-//删除管理功能
+    //删除管理功能
     @ResponseBody
     @RequestMapping("/policy/delect")
     public void delect(@RequestBody JSONObject json) {
-       // String id = (String) json.get("id");
+        // String id = (String) json.get("id");
         policylpml.deleteById((String) json.get("id"));
     }
-//上传模块
+
+    //上传模块
     @ResponseBody
     @RequestMapping("/upload")
-    public JSONObject upload(@RequestBody JSONObject jsonObject,HttpServletRequest request) {
+    public JSONObject upload(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
-      //  System.out.println(jsonObject.get("name"));
+        //  System.out.println(jsonObject.get("name"));
 
 //        MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
 //        MultipartFile multipartFile = multipartRequest.getFile("file");
@@ -69,39 +69,38 @@ public class PolicyController{
     }
 
 
-
     @ResponseBody
-        @RequestMapping("/policy/list")
-        public JSONObject postlist(@RequestParam("page") String page, @RequestParam("limit") String limit,@RequestParam("title") String title) {
-            int pagenum = Integer.valueOf(page);
-            int limitnum = Integer.valueOf(limit);
-            int total = policylpml.findCountByPolicy();
-            List<PolicyEntity> list= new ArrayList<PolicyEntity>();
-            JSONArray array = new JSONArray();
+    @RequestMapping("/policy/list")
+    public JSONObject postlist(@RequestParam("page") String page, @RequestParam("limit") String limit, @RequestParam("title") String title) {
+        int pagenum = Integer.valueOf(page);
+        int limitnum = Integer.valueOf(limit);
+        int total = policylpml.findCountByPolicy();
+        List<PolicyEntity> list = new ArrayList<PolicyEntity>();
+        JSONArray array = new JSONArray();
 
-            int startnum = (pagenum - 1) * limitnum;
+        int startnum = (pagenum - 1) * limitnum;
 
 
-        if( policylpml.findPolicyEntityByTitle(title)!=null){
-            PolicyEntity policyEntity =  policylpml.findPolicyEntityByTitle(title);
+        if (policylpml.findPolicyEntityByTitle(title) != null) {
+            PolicyEntity policyEntity = policylpml.findPolicyEntityByTitle(title);
             list.add(policyEntity);
-        }else {
+        } else {
             if (total > pagenum * limitnum) {
                 list = policylpml.findByPolicyRange(startnum, limitnum);
             } else {
                 list = policylpml.findByPolicyRange(startnum, pagenum * limitnum - total);
             }
         }
-            for (int i = 0; i < list.size(); i++) {
-                JSONObject object = new JSONObject();
-                object.put("createTime", list.get(i).getTime());
-                object.put("id", list.get(i).getId());
-                object.put("title", list.get(i).getTitle());
-                object.put("fileurl", list.get(i).getFileurl());
-                object.put("editorid", list.get(i).getEditorid());
-                object.put("comment_disabled", true);
-                array.add(object);
-            }
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject object = new JSONObject();
+            object.put("createTime", list.get(i).getTime());
+            object.put("id", list.get(i).getId());
+            object.put("title", list.get(i).getTitle());
+            object.put("fileurl", list.get(i).getFileurl());
+            object.put("editorid", list.get(i).getEditorid());
+            object.put("comment_disabled", true);
+            array.add(object);
+        }
 
         JSONObject data = new JSONObject();
         data.put("total", total);
@@ -125,7 +124,7 @@ public class PolicyController{
 
         PolicyEntity policyEntity = new PolicyEntity();
         policyEntity.setFileurl("模块未完成，等待上传模块完成传回url");
-        policyEntity.setId(String.valueOf(total+1));  //总行数加1
+        policyEntity.setId(String.valueOf(total + 1));  //总行数加1
         policyEntity.setTime(date);
         policyEntity.setTitle((String) json.get("title"));
 
