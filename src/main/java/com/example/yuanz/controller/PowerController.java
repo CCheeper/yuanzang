@@ -22,10 +22,10 @@ public class PowerController {
 
     @ResponseBody
     @RequestMapping("/power/sreach")
-    public JSONObject search(@RequestBody JSONObject json){
-        JSONObject data =new JSONObject();
+    public JSONObject search(@RequestBody JSONObject json) {
+        JSONObject data = new JSONObject();
 
-        if(powerlmpl.findById((String) json.get("title")).isPresent()){
+        if (powerlmpl.findById((String) json.get("title")).isPresent()) {
             ArrayList<String> listQuery = new ArrayList<String>();
 
             PowerEditEntity powerEditEntity = powerlmpl.findById((String) json.get("title")).get();
@@ -53,74 +53,104 @@ public class PowerController {
             if (powerEditEntity.getSchoolEdit().equals(1)) {
                 listQuery.add("school_edit");
             }
-            data.put("list",listQuery);
-            data.put("status",true);
+            data.put("list", listQuery);
+            data.put("status", true);
         }
 
         JSONObject message = new JSONObject();
         message.put("code", 20000);
         message.put("data", data);
 
-      return message;
+        return message;
     }
 
 
     @ResponseBody
     @RequestMapping("/power/edit")
-    public JSONObject searcha(@RequestBody JSONObject json){
+    public JSONObject searcha(@RequestBody JSONObject json) {
         JSONObject jsonObject = new JSONObject();
-        ArrayList<String> checkList = (ArrayList<String >) json.get("checkList");
+        ArrayList<String> checkList = (ArrayList<String>) json.get("checkList");
         String name = (String) json.get("title");
         PowerEditEntity powerEditEntity = powerlmpl.findById(name).get();
-        for (int i=0;i<checkList.size();i++){
-            if(checkList.get(i).equals("role_edit")){
-                powerEditEntity.setRoleEdit(1);
-            }else {
-                powerEditEntity.setRoleEdit(0);
-            }
-            if(checkList.get(i).equals("personal_edit")) {
-                powerEditEntity.setPersonalEdit(1);
-            }else {
-                powerEditEntity.setPersonalEdit(0);
-            }
-            if(checkList.get(i).equals("need_edit")){
-                powerEditEntity.setNeedEdit(1);
-            }else {
-                powerEditEntity.setNeedEdit(0);
-            }
-            if(checkList.get(i).equals("helpZ_edit")){
-                powerEditEntity.setHelpZEdit(1);
-            }else {
-                powerEditEntity.setHelpZEdit(0);
-            }
-            if(checkList.get(i).equals("workdata_edit")){
-                powerEditEntity.setWorkdataEdit(1);
-            }else {
-                powerEditEntity.setWorkdataEdit(0);
-            }
-            if(checkList.get(i).equals("power_edit")){
-                powerEditEntity.setPowerEdit(1);
-            }else {
-                powerEditEntity.setPowerEdit(0);
-            }
-            if(checkList.get(i).equals("road_edit")){
-                powerEditEntity.setRoadEdit(1);
-            }else {
-                powerEditEntity.setRoadEdit(0);
-            }
-            if(checkList.get(i).equals("school_edit")){
-                powerEditEntity.setSchoolEdit(1);
-            }else {
-                powerEditEntity.setSchoolEdit(0);
-            }
-            if(checkList.get(i).equals("helppeople_edit")){
-                powerEditEntity.setHelppeopleEdit(1);
-            }else {
-                powerEditEntity.setHelppeopleEdit(0);
-            }
+        boolean flag[] = new boolean[9];
+        for (int i = 0; i < flag.length; i++) {
+            flag[i] = true;
+        }
+        for (int i = 0; i < checkList.size(); i++) {
+            if (flag[0])
+                if (checkList.get(i).equals("role_edit")) {
+                    powerEditEntity.setRoleEdit(1);
+                    flag[0] = false;
+                } else {
+                    powerEditEntity.setRoleEdit(0);
+
+                }
+            if (flag[1])
+                if (checkList.get(i).equals("personal_edit")) {
+                    powerEditEntity.setPersonalEdit(1);
+                    flag[1] = false;
+                } else {
+                    powerEditEntity.setPersonalEdit(0);
+
+                }
+            if (flag[2])
+                if (checkList.get(i).equals("need_edit")) {
+                    powerEditEntity.setNeedEdit(1);
+                    flag[2] = false;
+                } else {
+                    powerEditEntity.setNeedEdit(0);
+
+                }
+            if (flag[3])
+                if (checkList.get(i).equals("helpZ_edit")) {
+                    powerEditEntity.setHelpZEdit(1);
+                    flag[3] = false;
+                } else {
+                    powerEditEntity.setHelpZEdit(0);
+
+                }
+            if (flag[4])
+                if (checkList.get(i).equals("workdata_edit")) {
+                    powerEditEntity.setWorkdataEdit(1);
+                    flag[4] = false;
+                } else {
+                    powerEditEntity.setWorkdataEdit(0);
+
+                }
+            if (flag[5])
+                if (checkList.get(i).equals("power_edit")) {
+                    powerEditEntity.setPowerEdit(1);
+                    flag[5] = false;
+                } else {
+                    powerEditEntity.setPowerEdit(0);
+
+                }
+            if (flag[6])
+                if (checkList.get(i).equals("road_edit")) {
+                    powerEditEntity.setRoadEdit(1);
+                    flag[6] = false;
+                } else {
+                    powerEditEntity.setRoadEdit(0);
+
+                }
+            if (flag[7])
+                if (checkList.get(i).equals("school_edit")) {
+                    powerEditEntity.setSchoolEdit(1);
+                    flag[7] = false;
+                } else {
+                    powerEditEntity.setSchoolEdit(0);
+
+                }
+            if (flag[8])
+                if (checkList.get(i).equals("helppeople_edit")) {
+                    powerEditEntity.setHelppeopleEdit(1);
+                    flag[8] = false;
+                } else {
+                    powerEditEntity.setHelppeopleEdit(0);
+
+                }
         }
         powerlmpl.save(powerEditEntity);
-
 
 
         jsonObject.put("code", 20000);
