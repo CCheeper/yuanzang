@@ -94,11 +94,9 @@ public class SchoolController {
     }
 
 
+    //添加
     @ResponseBody
-    @RequestMapping(value = {
-            "/article/create",
-            "/article/update"
-    })
+    @RequestMapping(value = {"/article/create", "/article/update"})
 
     public JSONObject create(@RequestBody JSONObject json, HttpServletRequest request) {
         //时间格式化
@@ -109,7 +107,7 @@ public class SchoolController {
         //将json中值取出并且储存到对象中
         SchoolEntity schoolEntity = new SchoolEntity();
 
-        schoolEntity.setCity("");
+        schoolEntity.setCity("city");
         schoolEntity.setCreateTime(date);
         schoolEntity.setHistory((String) json.get("history"));
         schoolEntity.setId((String) json.get("id"));
@@ -130,6 +128,7 @@ public class SchoolController {
             }
         }
 
+        //获取管理员的名字
         schoolEntity.setEditorId(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
         schoolmpl.save(schoolEntity);
 
@@ -137,6 +136,7 @@ public class SchoolController {
         JSONObject object = new JSONObject();
         object.put("code", 20000);
         object.put("data", "success");
+
         //object.put("editor", json.get("editorId"));
 
         return object;
