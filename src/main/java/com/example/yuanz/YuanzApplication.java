@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class YuanzApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(YuanzApplication.class, args);
     }
 
