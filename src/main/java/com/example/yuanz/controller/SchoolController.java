@@ -24,7 +24,7 @@ import java.util.List;
 
 
 
-//
+
 
 //搜索功能 强化模糊查询 注解Rest问题
 @Controller
@@ -106,9 +106,8 @@ public class SchoolController {
 
         //将json中值取出并且储存到对象中
         SchoolEntity schoolEntity = new SchoolEntity();
-
-        schoolEntity.setCity("city");
         schoolEntity.setCreateTime(date);
+        schoolEntity.setCity((String)json.get("city"));
         schoolEntity.setHistory((String) json.get("history"));
         schoolEntity.setId((String) json.get("id"));
         schoolEntity.setInfo((String) json.get("jianjie"));
@@ -127,8 +126,7 @@ public class SchoolController {
                 }
             }
         }
-
-        //获取管理员的名字
+        //获取管理员的名字并存入Entity中
         schoolEntity.setEditorId(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
         schoolmpl.save(schoolEntity);
 

@@ -79,7 +79,6 @@ public class HelpmanController {
             jsonObject.put("recruitId",list.get(i).getRecruitId());
             jsonObject.put("createTime",list.get(i).getCreateTime());
             array.add(jsonObject);
-
         }
 
         JSONObject data=new JSONObject();
@@ -92,55 +91,6 @@ public class HelpmanController {
 
         return helpman;
     }
-
-    //增加援藏人员
-    @ResponseBody
-    @RequestMapping(value = "help/add")
-    public JSONObject addHelp (@RequestBody JSONObject json, HttpServletRequest request){
-
-        //时间格式化
-        Date creatTime=new Date();
-        SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String date=ft.format(creatTime);
-
-        HelpmanEntity helpmanEntity=new HelpmanEntity();
-
-        helpmanEntity.setId("id");
-        helpmanEntity.setUsername("username");
-        helpmanEntity.setCreateTime((String) json.get("createTime"));
-        helpmanEntity.setGender((String) json.get("gender"));
-        helpmanEntity.setQq((String) json.get("qq"));
-        helpmanEntity.setEmail((String) json.get("email"));
-        helpmanEntity.setTelephone((String) json.get("telephone"));
-        helpmanEntity.setAddress((String) json.get("address"));
-        helpmanEntity.setSchoolName((String) json.get("schoolname"));
-
-
-        //获取cookie
-        String name=null;
-        Cookie[] cookies = request.getCookies();
-        if (null != cookies)
-            for (Cookie cookie : cookies)
-            {
-                if (cookie.getName().equals("username"))
-                {
-                    name = cookie.getValue();
-                }
-            }
-
-        //获取学校的名字
-        helpmanEntity.setSchoolName(schoolmpl.findSchoolEntityBySchoolName(name).getSchoolName());
-            helplmpl.save(helpmanEntity);
-
-            //返回正确的形式
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("code",20000);
-        jsonObject.put("data","success");
-
-        return jsonObject;
-
-    }
-
 
 
 //删除援藏人员
