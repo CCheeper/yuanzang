@@ -59,7 +59,43 @@ public class UserLoginController {
         object.put("code", 20000);
         JSONObject data = new JSONObject();
         ArrayList<String > arrayList =new ArrayList<>();
-        arrayList.add("admin");
+
+        if (powerlmpl.findById(name).isPresent()) {
+
+
+            PowerEditEntity powerEditEntity = powerlmpl.findById(name).get();
+            if (powerEditEntity.getPowerEdit().equals(1)) {
+                arrayList.add("power_edit");
+            }
+            if (powerEditEntity.getRoleEdit().equals(1)) {
+                arrayList.add("role_edit");
+            }
+            if (powerEditEntity.getPersonalEdit().equals(1)) {
+                arrayList.add("personal_edit");
+            }
+            if (powerEditEntity.getNeedEdit().equals(1)) {
+                arrayList.add("need_edit");
+            }
+            if (powerEditEntity.getHelppeopleEdit().equals(1)) {
+                arrayList.add("helppeople_edit");
+            }
+            if (powerEditEntity.getHelpZEdit().equals(1)) {
+                arrayList.add("helpZ_edit");
+            }
+            if (powerEditEntity.getWorkdataEdit().equals(1)) {
+                arrayList.add("workdata_edit");
+            }
+            if (powerEditEntity.getRoadEdit().equals(1)) {
+                arrayList.add("road_edit");
+            }
+            if (powerEditEntity.getSchoolEdit().equals(1)) {
+                arrayList.add("school_edit");
+            }
+        }
+        arrayList.add("editor");
+
+
+
         data.put("roles", arrayList);
         data.put("introduction", "I am a super administrator");
         data.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");

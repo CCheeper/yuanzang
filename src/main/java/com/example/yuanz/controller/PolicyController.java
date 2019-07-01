@@ -7,13 +7,14 @@ import com.example.yuanz.server.Administratorlpml;
 import com.example.yuanz.server.Policylpml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -39,18 +40,20 @@ public class PolicyController {
     //上传模块
     @ResponseBody
     @RequestMapping("/upload")
-    public JSONObject upload(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
+    public JSONObject upload(@RequestBody JSONObject jsonObject,HttpServletRequest request) {
 
-        //  System.out.println(jsonObject.get("name"));
+         System.out.println(jsonObject.get("name"));
 
-//        MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
-//        MultipartFile multipartFile = multipartRequest.getFile("file");
-//
-//
+   //     MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
+       // MultipartFile multipartFile = multipartRequest.getFile("file");
+        System.out.println(  request.getParameter("multipart"));
+
+
+
 //        Map<String, Object> result = new HashMap<>();
-//        if (multipartFile != null && !multipartFile.isEmpty()){
+//        if (file != null && !file.isEmpty()){
 //            try {
-//                multipartFile.transferTo(new File("d:/"+multipartFile.getOriginalFilename()));
+//                file.transferTo(new File("d:/"+file.getOriginalFilename()));
 //                result.put("code", 200);
 //                result.put("msg", "success");
 //            } catch (IOException e) {

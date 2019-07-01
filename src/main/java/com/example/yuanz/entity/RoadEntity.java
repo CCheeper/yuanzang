@@ -7,13 +7,11 @@ import java.util.Objects;
 @Table(name = "road", schema = "yuanzang", catalog = "")
 public class RoadEntity {
     private String id;
+    private String editor;
     private String route;
-    private String title;
-    private String schoolid;
+    private String schoolname;
     private String time;
     private String other;
-    private String editorid;
-    private String schoolname;
 
     @Id
     @Column(name = "id")
@@ -23,6 +21,16 @@ public class RoadEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "editor")
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
 
     @Basic
@@ -36,23 +44,13 @@ public class RoadEntity {
     }
 
     @Basic
-    @Column(name = "title")
-    public String getTitle() {
-        return title;
+    @Column(name = "schoolname")
+    public String getSchoolname() {
+        return schoolname;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Basic
-    @Column(name = "schoolid")
-    public String getSchoolid() {
-        return schoolid;
-    }
-
-    public void setSchoolid(String schoolid) {
-        this.schoolid = schoolid;
+    public void setSchoolname(String schoolname) {
+        this.schoolname = schoolname;
     }
 
     @Basic
@@ -81,35 +79,15 @@ public class RoadEntity {
         if (o == null || getClass() != o.getClass()) return false;
         RoadEntity that = (RoadEntity) o;
         return Objects.equals(id, that.id) &&
+                Objects.equals(editor, that.editor) &&
                 Objects.equals(route, that.route) &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(schoolid, that.schoolid) &&
+                Objects.equals(schoolname, that.schoolname) &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(other, that.other);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, route, title, schoolid, time, other);
-    }
-
-    @Basic
-    @Column(name = "editorid")
-    public String getEditorid() {
-        return editorid;
-    }
-
-    public void setEditorid(String editorid) {
-        this.editorid = editorid;
-    }
-
-    @Basic
-    @Column(name = "schoolname")
-    public String getSchoolname() {
-        return schoolname;
-    }
-
-    public void setSchoolname(String schoolname) {
-        this.schoolname = schoolname;
+        return Objects.hash(id, editor, route, schoolname, time, other);
     }
 }
