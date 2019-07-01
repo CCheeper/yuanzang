@@ -58,7 +58,9 @@ public class UserLoginController {
         }
         object.put("code", 20000);
         JSONObject data = new JSONObject();
-        data.put("roles", "admin");
+        ArrayList<String > arrayList =new ArrayList<>();
+        arrayList.add("admin");
+        data.put("roles", arrayList);
         data.put("introduction", "I am a super administrator");
         data.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         data.put("name", name);
