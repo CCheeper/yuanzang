@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface Demandlmpl extends JpaRepository <DemandmanagerEntity,String> {
 
-    @Query(value = "select * from Demandmanager LIMIT ?1,?2 ",nativeQuery = true)
+    @Query(value = "select * from demandmanager LIMIT ?1,?2 ",nativeQuery = true)
     List<DemandmanagerEntity> findByDemandRang(int start,int end);
 
-    @Query(value = "select count(*) from Demandmanager",nativeQuery = true)
+    @Query(value = " select count(*) from demandmanager",nativeQuery = true)
     int findCountByDemand();
 
 }

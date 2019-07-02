@@ -8,8 +8,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.yuanz.entity.DemandmanagerEntity;
 import com.example.yuanz.entity.HelpmanEntity;
+import com.example.yuanz.server.Administratorlpml;
 import com.example.yuanz.server.Demandlmpl;
 import com.example.yuanz.server.Schoolmpl;
+import org.hibernate.annotations.AttributeAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +37,8 @@ public class demandController {
     Demandlmpl demandlmpl;
     @Autowired
     Schoolmpl schoolmpl;
+    @Autowired
+    Administratorlpml administratorlpml;
 
 
     @ResponseBody
@@ -86,7 +90,7 @@ public class demandController {
     //增加援藏人员
     @ResponseBody
     @RequestMapping(value = {"demandmanager/create", "demandmanager/update"})
-    public JSONObject addHelp (@RequestBody JSONObject json, HttpServletRequest request){
+    public JSONObject add_demand (@RequestBody JSONObject json, HttpServletRequest request){
 
         //时间格式化
         Date creatTime=new Date();
@@ -96,44 +100,53 @@ public class demandController {
         DemandmanagerEntity demandmanagerEntity=new DemandmanagerEntity();
 
 
-        if(json.get("id")!=null){
-            String name = null;
-            Cookie[] cookies = request.getCookies();
-            if (null != cookies)
+        String name = null;
+        Cookie[] cookies = request.getCookies();
+        if (null != cookies)
+        {
+            for (Cookie cookie : cookies)
             {
-                for (Cookie cookie : cookies)
-                {
-                    if (cookie.getName().equals("username"))
-                     name = cookie.getValue();
-                }
+                if (cookie.getName().equals("username"))
+                    name = cookie.getValue();
             }
-            demandmanagerEntity.setId((String) json.get("id"));
-        }else {
+        }
+        if(String.valueOf(json.get("id")).isEmpty())
+        {
             demandmanagerEntity.setId(String.valueOf(demandlmpl.findCountByDemand()+1));
 
+        }else {
+            demandmanagerEntity.setId((String) json.get("id"));
+
         }
+
         demandmanagerEntity.setCreateTime(date);
+        demandmanagerEntity.setEditor(name);
         demandmanagerEntity.setTitle((String) json.get("title"));
-        demandmanagerEntity.setEditor((String) json.get("Editor"));
         demandmanagerEntity.setUgent((String) json.get("ugent"));
         demandmanagerEntity.setSchoolName((String) json.get("school_name"));
         demandmanagerEntity.setMessage((String) json.get("message"));
 
         demandlmpl.save(demandmanagerEntity);
 
-        //返回正确的形式
+
+
+
+        //获取管理员的名字并存入Entity中
+       // demandmanagerEntity.setEditor(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
+
+
+        //返回json数据
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("code",20000);
         jsonObject.put("data","success");
 
         return jsonObject;
-
     }
 
 
     //删除援藏需求
     @ResponseBody
-    @RequestMapping("/demandmanager/delete")
+    @RequestMapping("/demanddanager/delete")
     public void Delete(@RequestBody JSONObject deletejson) {
         demandlmpl.deleteById((String) deletejson.get("id"));
     }

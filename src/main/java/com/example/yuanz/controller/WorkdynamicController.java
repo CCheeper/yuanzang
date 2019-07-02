@@ -57,10 +57,10 @@ public class WorkdynamicController {
             {
             //判断失败则直接输出整个列表
             if (total>pagenum*limitnum){
-                list=workdynamiclmpl.findByWorkdynamicRange(0,limitnum);
+                list=workdynamiclmpl.findByWorkdynamicRange(startnum,limitnum);
             }else
             {
-                list=workdynamiclmpl.findByWorkdynamicRange(0,total-limitnum);
+                list=workdynamiclmpl.findByWorkdynamicRange(startnum,total-limitnum);
             }
             }
 
@@ -71,16 +71,16 @@ public class WorkdynamicController {
             jsonObject.put("title",list.get(i).getTitle());
             jsonObject.put("message",list.get(i).getMessage());
             jsonObject.put("lasttime",list.get(i).getLasttime());
-            jsonObject.put("editorid",list.get(i).getEditorid());
+            jsonObject.put("edtiorid",list.get(i).getEditorid());
             jsonArray.add(jsonObject);
         }
 
         JSONObject data=new JSONObject();
         data.put("total",total);
-        data.put("item",jsonArray);
+        data.put("items",jsonArray);
 
         JSONObject workdynamic = new JSONObject();
-        workdynamic.put("coke",20000);
+        workdynamic.put("code",20000);
         workdynamic.put("data",data);
 
         return workdynamic;
@@ -95,12 +95,9 @@ public class WorkdynamicController {
         SimpleDateFormat ft=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String date=ft.format(workTime);
 
-            WorkdynamicEntity workdynamicEntity=new WorkdynamicEntity();
-            workdynamicEntity.setLasttime(date);
-            workdynamicEntity.setId((String)json.get("id"));
-            workdynamicEntity.setTitle((String)json.get("title"));
-            workdynamicEntity.setMessage((String)json.get("message"));
-            workdynamicEntity.setEditorid((String)json.get("editorid"));
+        WorkdynamicEntity workdynamicEntity=new WorkdynamicEntity();
+
+
 
         //获取cookie中的username
         String name = null;
@@ -112,6 +109,18 @@ public class WorkdynamicController {
                 }
             }
         }
+
+        if(json.get("id")!=null)
+        {
+            workdynamicEntity.setId((String) json.get("id"));
+        }else {
+            workdynamicEntity.setId(String.valueOf(workdynamiclmpl.findCountByWorkdynamic()+1));
+
+        }
+            workdynamicEntity.setLasttime(date);
+            workdynamicEntity.setTitle((String)json.get("title"));
+            workdynamicEntity.setMessage((String)json.get("message"));
+
 
         //获取管理员的名字并存入Entity中
         workdynamicEntity.setEditorid(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
