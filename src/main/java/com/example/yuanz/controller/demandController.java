@@ -71,7 +71,7 @@ public class demandController {
             object.put("message", list.get(i).getMessage());
             object.put("create_time", list.get(i).getCreateTime());
             object.put("editor", list.get(i).getEditor());
-                //将json放入array数组中
+            //将json放入array数组中
             array.add(object);
 
         }
@@ -132,7 +132,7 @@ public class demandController {
 
 
         //获取管理员的名字并存入Entity中
-       // demandmanagerEntity.setEditor(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
+        // demandmanagerEntity.setEditor(administratorlpml.findAdministratorEntityByUsername(name).getUsername());
 
 
         //返回json数据
@@ -150,5 +150,28 @@ public class demandController {
     public void Delete(@RequestBody JSONObject deletejson) {
         demandlmpl.deleteById((String) deletejson.get("id"));
     }
+
+    //获取id，编辑者，时间传输给前端，解决前端编辑，创建后不显示前面三者的问题
+    @ResponseBody
+    @RequestMapping("/demand/getthings")
+    public JSONObject getthings() {
+
+        JSONObject object = new JSONObject();
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String date = ft.format(dNow);
+
+        int idcount = demandlmpl.findCountByDemand() +1;
+        while (demandlmpl.findById(String.valueOf(idcount)).isPresent()){
+            idcount = idcount+1;
+        }
+
+
+        object.put("id", String.valueOf(idcount));
+        object.put("date", date);
+
+        return object;
+    }
+
 
 }

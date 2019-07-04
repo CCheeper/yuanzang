@@ -13,8 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -39,37 +38,76 @@ public class PolicyController {
 
     //上传模块
     @ResponseBody
+    @RequestMapping("/uploadfile")
+    public JSONObject upload(@RequestParam("file") MultipartFile file,@RequestParam("id")String id,@RequestParam("editor")String editor ,@RequestParam("title")String title) {
+        JSONObject object = new JSONObject();
+        object.put("code", 20000);
+        PolicyEntity policyEntity = new PolicyEntity();
+
+
+
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String date = ft.format(dNow);
+
+        if (id.equals("")) {
+            policyEntity.setId(String.valueOf(policylpml.findCountByPolicy() + 1));
+        }else {
+            policyEntity = policylpml.findById(id).get();
+            policyEntity.setEditorid(editor);
+            policyEntity.setTime(date);
+            policyEntity.setFileurl(file.getOriginalFilename());
+            policyEntity.setTitle(title);
+        }
+        policylpml.save(policyEntity);
+
+
+
+
+
+
+        System.out.println(file.getClass());
+
+        if (!file.isEmpty()) {
+            try {
+                /*
+                 * 这段代码执行完毕之后，图片上传到了工程的跟路径； 大家自己扩散下思维，如果我们想把图片上传到
+                 * d:/files大家是否能实现呢？ 等等;
+                 * 这里只是简单一个例子,请自行参考，融入到实际中可能需要大家自己做一些思考，比如： 1、文件路径； 2、文件名；
+                 * 3、文件格式; 4、文件大小的限制;
+                 */
+                BufferedOutputStream out = new BufferedOutputStream(
+                        new FileOutputStream(new File(
+                                file.getOriginalFilename())));
+                System.out.println(file.getName());
+                out.write(file.getBytes());
+                out.flush();
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return object;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return object;
+            }
+            return object;
+        } else {
+            return object;
+        }
+    }
+
+    @ResponseBody
     @RequestMapping("/upload")
-    public JSONObject upload(@RequestBody JSONObject jsonObject,HttpServletRequest request) {
+    public JSONObject upload(@RequestBody JSONObject json) {
 
-         System.out.println(jsonObject.get("name"));
+        System.out.println(json.get("name"));
 
-   //     MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
-       // MultipartFile multipartFile = multipartRequest.getFile("file");
-        System.out.println(  request.getParameter("multipart"));
-
-
-
-//        Map<String, Object> result = new HashMap<>();
-//        if (file != null && !file.isEmpty()){
-//            try {
-//                file.transferTo(new File("d:/"+file.getOriginalFilename()));
-//                result.put("code", 200);
-//                result.put("msg", "success");
-//            } catch (IOException e) {
-//                result.put("code", -1);
-//                result.put("msg", "文件上传出错，请重新上传！");
-//                e.printStackTrace();
-//            }
-//        } else {
-//            result.put("code", -1);
-//            result.put("msg", "未获取到有效的文件信息，请重新上传!");
-//        }
 
         JSONObject object = new JSONObject();
         object.put("code", 20000);
         return object;
     }
+
 
 
     @ResponseBody
@@ -100,7 +138,7 @@ public class PolicyController {
             object.put("id", list.get(i).getId());
             object.put("title", list.get(i).getTitle());
             object.put("fileurl", list.get(i).getFileurl());
-            object.put("editorid", list.get(i).getEditorid());
+            object.put("editor", list.get(i).getEditorid());
             object.put("comment_disabled", true);
             array.add(object);
         }
@@ -160,13 +198,17 @@ public class PolicyController {
     @ResponseBody
     @RequestMapping("/policy/getthings")
     public JSONObject getthings(HttpServletRequest request) {
-        int total = policylpml.findCountByPolicy() + 1;
-        String id = String.valueOf(total);
+
         JSONObject object = new JSONObject();
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String date = ft.format(dNow);
-        object.put("id", id);
+
+        int idcount = policylpml.findCountByPolicy() +1;
+        while (policylpml.findById(String.valueOf(idcount)).isPresent()){
+            idcount = idcount+1;
+        }
+        object.put("id", String.valueOf(idcount));
         object.put("date", date);
 
 

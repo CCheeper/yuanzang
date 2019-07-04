@@ -3,7 +3,11 @@ package com.example.yuanz.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.yuanz.entity.AdministratorEntity;
+import com.example.yuanz.entity.PolicyEntity;
+import com.example.yuanz.entity.PowerEditEntity;
 import com.example.yuanz.server.Administratorlpml;
+import com.example.yuanz.server.Policylpml;
+import com.example.yuanz.server.Powerlmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +27,8 @@ import java.util.List;
 public class RoleController {
     @Autowired
     Administratorlpml administratorlpml;
-
+    @Autowired
+    Powerlmpl powerlmpl;
 
     @ResponseBody
     @RequestMapping("/role/list")
@@ -36,10 +42,10 @@ public class RoleController {
 
         //如果搜索框不存在字段则获取全部数据，如果搜索框存在，则转到第一步，通过搜索框内容查询对应内容
 
-        if( administratorlpml.findAdministratorEntityByUsername(titel)!=null){
-            AdministratorEntity administratorEntity =  administratorlpml.findAdministratorEntityByUsername(titel);
+        if (administratorlpml.findAdministratorEntityByUsername(titel) != null) {
+            AdministratorEntity administratorEntity = administratorlpml.findAdministratorEntityByUsername(titel);
             list.add(administratorEntity);
-        }else {
+        } else {
             int startnum = (pagenum - 1) * limitnum;
             if (total > pagenum * limitnum) {
                 list = administratorlpml.findByAdministratorRange(startnum, limitnum);
@@ -49,7 +55,6 @@ public class RoleController {
         }
         //用于存储list
         JSONArray array = new JSONArray();
-
 
 
         for (int i = 0; i < list.size(); i++) {
@@ -79,7 +84,10 @@ public class RoleController {
     @RequestMapping("/role/delete")
     public void isSuccess(@RequestBody JSONObject json) {
         String id = (String) json.get("id");
+        powerlmpl.delete(powerlmpl.findPowerEditEntityByAdminId(administratorlpml.findById(id).get().getUsername()));
         administratorlpml.deleteById(id);
+
+
     }
 
 
@@ -98,9 +106,38 @@ public class RoleController {
 
         //将json中值取出并且储存到对象中
         AdministratorEntity administratorEntity = new AdministratorEntity();
-        if(administratorlpml.findAdministratorEntityByUsername((String) json.get("username"))==null){
-            administratorEntity.setId(String.valueOf(administratorlpml.findCountByAdministrator()));
-        }else {
+        if (administratorlpml.findAdministratorEntityByUsername((String) json.get("username")) == null) {
+            administratorEntity.setId(String.valueOf(administratorlpml.findCountByAdministrator() + 1));
+            PowerEditEntity powerEditEntity = new PowerEditEntity();
+            powerEditEntity.setPowerEdit(0);
+            powerEditEntity.setHelppeopleEdit(1);
+            powerEditEntity.setSchoolEdit(1);
+            powerEditEntity.setRoadEdit(1);
+            powerEditEntity.setWorkdataEdit(1);
+            powerEditEntity.setHelpZEdit(1);
+            powerEditEntity.setNeedEdit(1);
+            powerEditEntity.setPersonalEdit(1);
+            powerEditEntity.setRoleEdit(1);
+            powerEditEntity.setAdminId((String) json.get("username"));
+
+            String name = null;
+            Cookie[] cookies = request.getCookies();
+            if (null != cookies) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("username")) {
+                        name = cookie.getValue();
+                    }
+                }
+            }
+
+            powerEditEntity.setEditor(name);
+            powerEditEntity.setId(String.valueOf(powerlmpl.findCountByPolicy() + 1));
+            powerEditEntity.setTime(date);
+
+            powerlmpl.save(powerEditEntity);
+
+
+        } else {
             administratorEntity.setId((String) json.get("id"));
         }
 
@@ -136,9 +173,16 @@ public class RoleController {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String date = ft.format(dNow);
-        object.put("id", id);
+
+
+        int idcount = administratorlpml.findCountByAdministrator() +1;
+        while (administratorlpml.findById(String.valueOf(idcount)).isPresent()){
+            idcount = idcount+1;
+        }
+
+        object.put("id", String.valueOf(idcount));
         object.put("date", date);
- //       object.put("editor", "admin");
+        // object.put("editor", "admin");
         return object;
     }
 }

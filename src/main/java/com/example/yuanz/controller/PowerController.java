@@ -53,6 +53,9 @@ public class PowerController {
             if (powerEditEntity.getSchoolEdit().equals(1)) {
                 listQuery.add("school_edit");
             }
+            if (powerEditEntity.getPowerEdit().equals(1)) {
+                listQuery.add("power_edit");
+            }
             data.put("list", listQuery);
             data.put("status", true);
         }

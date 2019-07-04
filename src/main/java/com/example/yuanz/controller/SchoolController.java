@@ -46,16 +46,16 @@ public class SchoolController {
         List<SchoolEntity> list = new ArrayList<SchoolEntity>();
 
         //如果搜索框不存在字段则获取全部数据，如果搜索框存在，则转到第一步，通过搜索框内容查询对应内容
-        if( schoolmpl.findSchoolEntityBySchoolName(titel)!=null){
-            SchoolEntity schoolEntity =  schoolmpl.findSchoolEntityBySchoolName(titel);
-            list.add(schoolEntity);
-        }else {
+        if( titel.equals("")){
+
             int startnum = (pagenum - 1) * limitnum;
             if (total > pagenum * limitnum) {
                 list = schoolmpl.findBySchoolRange(startnum, limitnum);
             } else {
                 list = schoolmpl.findBySchoolRange(startnum, pagenum * limitnum - total);
             }
+        }else {
+            list  =  schoolmpl.findSchoolEntitiesBySchoolName(titel);
         }
         //用于存储list
         JSONArray array = new JSONArray();
@@ -151,7 +151,14 @@ public class SchoolController {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String date = ft.format(dNow);
-        object.put("id", id);
+
+        int idcount = schoolmpl.findCountBySchool() +1;
+        while (schoolmpl.findById(String.valueOf(idcount)).isPresent()){
+            idcount = idcount+1;
+        }
+
+
+        object.put("id", String.valueOf(idcount));
         object.put("date", date);
         object.put("editor", "admin");
         return object;

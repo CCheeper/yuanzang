@@ -14,5 +14,5 @@ public interface Schoolmpl extends JpaRepository<SchoolEntity,String> {
     @Query(value = " select count(*) from school", nativeQuery = true)
     int  findCountBySchool();
 
-    SchoolEntity findSchoolEntityBySchoolName(String schoolname);
+    List<SchoolEntity> findSchoolEntitiesBySchoolName(String schoolname);
 }

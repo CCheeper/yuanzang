@@ -12,5 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface Powerlmpl extends CrudRepository<PowerEditEntity,String> {
+    @Query(value = " select count(*) from power_edit", nativeQuery = true)
+    int  findCountByPolicy();
+    PowerEditEntity findPowerEditEntityByAdminId(String  id);
+    void deleteByAdminId(String id);
 
 }
